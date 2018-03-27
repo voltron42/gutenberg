@@ -1,45 +1,28 @@
 (ns gutenberg.spec.svg
-  (:require [clojure.spec.alpha :as s]
-            [pred-i-kit.core :as p]))
+  (:require [clojure.spec.alpha :as s]))
 
-(s/def ::dim (s/or :int int?
-                   :double double?))
+(s/def ::dim (s/alt :int int? :double double?))
 
-(s/def :dim/point
-  (s/and vector?
-         (p/exact-count 2)
-         (s/coll-of ::dim)))
-(s/def :dim/width ::dim)
-(s/def :dim/height ::dim)
-(s/def :dim/size ::dim/point)
-(s/def :dim/x ::dim)
-(s/def :dim/y ::dim)
-(s/def :dim/xy ::dim/point)
-(s/def :dim/x1 ::dim)
-(s/def :dim/y1 ::dim)
-(s/def :dim/xy1 ::dim/point)
-(s/def :dim/x2 ::dim)
-(s/def :dim/y2 ::dim)
-(s/def :dim/xy2 ::dim/point)
-(s/def :dim/r ::dim)
-(s/def :dim/cx ::dim)
-(s/def :dim/cy ::dim)
-(s/def :dim/cxy ::dim/point)
-(s/def :dim/rx ::dim)
-(s/def :dim/ry ::dim)
-(s/def :dim/rxy ::dim/point)
-(s/def :dim/points
-  (s/and vector?
-         (p/min-count 3)
-         (s/coll-of :dim/point)))
+(s/def ::point (s/cat :x ::dim :y ::dim))
+(s/def ::point1 (s/cat :x1 ::dim :y1 ::dim))
+(s/def ::point2 (s/cat :x2 ::dim :y2 ::dim))
+(s/def ::center-point (s/cat :cx ::dim :cy ::dim))
+(s/def ::r-point (s/cat :rx ::dim :ry ::dim))
+(s/def ::size (s/cat :width ::dim :height ::dim))
+
+(s/def ::points
+  (s/cat :first-point ::point
+         :second-point ::point
+         :points (s/+ ::point)))
+
+(s/def ::color-component (s/and int? (partial <= 0) (partial >= 250)))
 
 (s/def ::rgb-color
-  (s/and vector?
-         (p/exact-count 3)
-         (s/coll-of (p/value-range 0 255))))
+  (s/cat :r ::color-component
+         :g ::color-component
+         :b ::color-component))
 
-(s/def ::hex-color
-  (p/matches? #"[#][0-9A-F]{6}"))
+(s/def ::hex-color (partial re-matches #"[#][0-9A-F]{6}"))
 
 (s/def ::named-color
   #{"aliceblue"
@@ -195,21 +178,17 @@
                      :rgb ::rgb-color
                      :named ::named-color))
 
-(s/def :style/stroke ::color)
+(s/def ::style-stroke ::color)
 
-(s/def :style/stroke-width number?)
+(s/def ::style-stroke-width ::dim)
 
-(s/def :style/fill ::color)
+(s/def ::style-fill ::color)
 
-(s/def :style/stroke-linecap
-  #{"butt" "round" "square"})
+(s/def ::style-stroke-linecap #{"butt" "round" "square"})
 
-(s/def :style/stroke-dasharray
-  (s/and vector?
-         (p/min-count 1)
-         (s/coll-of ::dim)))
+(s/def ::style-stroke-dasharray (s/+ ::dim))
 
-(s/def :style/fill-rule #{(keyword "nonzero") (keyword "evenodd")})
+(s/def ::style-fill-rule #{(keyword "nonzero") (keyword "evenodd")})
 
 (s/def ::style
   (s/keys :opt-un [:style/stroke
@@ -218,122 +197,128 @@
                    :style/stroke-linecap
                    :style/stroke-dasharray]))
 
-(s/def :path/unary
-  (s/and vector?
-         (s/cat :label #{"H" "h" "V" "v"}
-                :coord ::dim)))
-(s/def :path/binary
-  (s/and vector?
-         (s/cat :label #{"M" "m" "L" "l" "T" "t"}
-                :x ::dim
-                :y ::dim)))
-(s/def :path/curve
-  (s/and vector?
-         (s/cat :label #{"S" "s" "Q" "q"}
-                :x ::dim
-                :y ::dim
-                :x1 ::dim
-                :y1 ::dim)))
-(s/def :path/cubic
-  (s/and vector?
-         (s/cat :label #{"C" "c"}
-                :x ::dim
-                :y ::dim
-                :x1 ::dim
-                :y1 ::dim
-                :x2 ::dim
-                :y2 ::dim)))
-(s/def :path/arc
-  (s/and vector?
-         (s/cat :label #{"A" "a"}
-                :rx ::dim
-                :ry ::dim
-                :x-rot ::dim
-                :large ::dim
-                ::sweep ::dim
-                :x ::dim
-                :y ::dim)))
+(s/def ::path-unary
+  (s/cat :label #{"H" "h" "V" "v"}
+         :coord ::dim))
 
-(s/def :path/d
-  (s/and vector?
-         (s/coll-of
-           (s/or
-             :unary :path/unary
-             :binary :path/binary
-             :curve  :path/curve
-             :cubic :path/cubic
-             :arc :path/arc))))
+(s/def ::path-binary
+  (s/cat :label #{"M" "m" "L" "l" "T" "t"}
+         :point ::point))
 
-(s/def :shape/path
+(s/def ::path-curve
+  (s/cat :label #{"S" "s" "Q" "q"}
+         :xy1 ::point1
+         :xy ::point
+         ))
+
+(s/def ::path-cubic
+  (s/cat :label #{"C" "c"}
+         :xy1 ::point1
+         :xy2 ::point2
+         :xy ::point
+         ))
+
+(s/def ::path-arc
+  (s/cat :label #{"A" "a"}
+         :rxy ::r-point
+         :x-rot ::dim
+         :large ::dim
+         :sweep ::dim
+         :xy ::point
+         ))
+
+(s/def ::path-d
+  (s/alt
+    :unary ::path-unary
+    :binary ::path-binary
+    :curve  ::path-curve
+    :cubic ::path-cubic
+    :arc ::path-arc
+    ))
+
+(s/def ::shape-path
   (s/and vector?
          (s/cat :label #{(keyword "path")}
-                :d :path/d
+                :d ::path-d
                 :style (s/? ::style))))
 
-(s/def :shape/rectangle
+(s/def ::shape-rectangle
   (s/and vector?
          (s/cat :label #{(keyword "rect")}
-                :xy :dim/xy
-                :size :dim/size
-                :style (s/merge
-                         ::style
-                         (s/keys :opt-un [:dim/rxy])))))
+                :xy ::point
+                :size ::size
+                :rxy (s/? ::r-point)
+                :style (s/? ::style))))
 
-(s/def :shape/line
+(s/def ::shape-line
   (s/and vector?
          (s/cat :label #{(keyword "line")}
-                :xy1 :dim/xy1
-                :xy2 :dim/xy2
+                :xy1 ::point1
+                :xy2 ::point2
                 :style (s/? ::style))))
 
-(s/def :shape/circle
+(s/def ::shape-circle
   (s/and vector?
          (s/cat :label #{(keyword "circle")}
-                :cxy :dim/cxy
-                :r :dim/r
+                :cxy ::center-point
+                :r ::dim
                 :style (s/? ::style))))
 
-(s/def :shape/ellipse
+(s/def ::shape-ellipse
   (s/and vector?
          (s/cat :label #{(keyword "ellipse")}
-                :cxy :dim/cxy
-                :rxy :dim/rxy
+                :cxy ::center-point
+                :rxy ::r-point
                 :style (s/? ::style))))
 
-(s/def :shape/polygon
+(s/def ::shape-polygon
   (s/and vector?
          (s/cat :label #{(keyword "polygon")}
-                :point :dim/points
+                :point ::points
                 :style (s/merge
                          ::style
-                         (s/keys :opt-un [:style/fill-rule])))))
+                         (s/keys :opt-un [::style-fill-rule])))))
 
-(s/def :shape/polyline
+(s/def ::shape-polyline
   (s/and vector?
          (s/cat :label #{(keyword "polyline")}
-                :point :dim/points
+                :point ::points
                 :style (s/? ::style))))
 
 (s/def ::shapes
-  (s/or :rect :shape/rectangle
-        :circ :shape/circle
-        :ellipse :shape/ellipse
-        :line :shape/line
-        :polyline :shape/polyline
-        :polygon :shape/polygon
-        :path :shape/path))
+  (s/alt :rect ::shape-rectangle
+        :circ ::shape-circle
+        :ellipse ::shape-ellipse
+        :line ::shape-line
+        :polyline ::shape-polyline
+        :polygon ::shape-polygon
+        :path ::shape-path))
 
-(s/def :text/spans
+(s/def ::text-spans
   (s/and vector?
          (s/cat :label #{(keyword "text")}
-                :xy :dim/xy
-                :style (s/? ::style)
-                :text string?)))
+                :xy ::point
+                :text string?
+                :style (s/? ::style))))
 
 (s/def ::text
   (s/and vector?
          (s/cat :label #{(keyword "text")}
-                :xy :dim/xy
-                :style (s/? ::style)
+                :xy ::point
                 :text string?
+                :style (s/? ::style)
                 :spans (s/* :text/spans))))
+
+(s/def ::elements
+  (s/alt :text ::text
+        :shapes ::shapes))
+
+(s/def ::svg
+  (s/and vector?
+         (s/cat :label #{(keyword "svg")}
+                :size ::size
+                :viewBox (s/? (s/cat :min-x ::dim
+                                     :min-y ::dim
+                                     :max-x ::dim
+                                     :max-y ::dim))
+                :elements (s/+ ::elements))))
