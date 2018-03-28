@@ -22,7 +22,7 @@
          :g ::color-component
          :b ::color-component))
 
-(s/def ::hex-color (partial re-matches #"[#][0-9A-F]{6}"))
+(s/def ::hex-color (partial re-matches #"[#][0-9A-F]{3}([0-9A-F]{3})?"))
 
 (s/def ::named-color
   #{"aliceblue"
@@ -174,9 +174,9 @@
     "yellow"
     "yellowgreen"})
 
-(s/def ::color (s/or :hex ::hex-color
-                     :rgb ::rgb-color
-                     :named ::named-color))
+(s/def ::color (s/alt :hex ::hex-color
+                      :rgb ::rgb-color
+                      :named ::named-color))
 
 (s/def ::style-stroke ::color)
 
