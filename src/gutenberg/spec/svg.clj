@@ -15,7 +15,7 @@
          :second-point ::point
          :points (s/+ ::point)))
 
-(s/def ::color-component (s/and int? (partial <= 0) (partial >= 250)))
+(s/def ::color-component (s/and int? (partial <= 0) (partial >= 255)))
 
 (s/def ::rgb-color
   (s/cat :r ::color-component
