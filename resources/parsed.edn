@@ -1,0 +1,434 @@
+{:tag :Document,
+ :content
+ [{:tag :Heading,
+   :attrs {:level 1},
+   :content [{:tag :Text, :attrs {:literal "An h1 header"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs {:literal "Paragraphs are separated by a blank line."}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "2nd paragraph. "}}
+    {:tag :Emphasis,
+     :attrs {:open "*", :close "*"},
+     :content [{:tag :Text, :attrs {:literal "Italic"}}]}
+    {:tag :Text, :attrs {:literal ", "}}
+    {:tag :StrongEmphasis,
+     :attrs {:open "**", :close "**"},
+     :content [{:tag :Text, :attrs {:literal "bold"}}]}
+    {:tag :Text, :attrs {:literal ", and "}}
+    {:tag :Code, :attrs {:literal "monospace"}}
+    {:tag :Text, :attrs {:literal ". Itemized lists"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "look like:"}}]}
+  {:tag :BulletList,
+   :attrs {:is-tight? true, :bullet-marker \*},
+   :content
+   [{:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "this one"}}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "that one"}}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "the other one"}}]}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Note that --- not considering the asterisk --- the actual text"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "content starts at 4-columns in."}}]}
+  {:tag :BlockQuote,
+   :content
+   [{:tag :Paragraph,
+     :content
+     [{:tag :Text, :attrs {:literal "Block quotes are"}}
+      {:tag :SoftLineBreak}
+      {:tag :Text, :attrs {:literal "written like so."}}]}
+    {:tag :Paragraph,
+     :content
+     [{:tag :Text,
+       :attrs {:literal "They can span multiple paragraphs,"}}
+      {:tag :SoftLineBreak}
+      {:tag :Text, :attrs {:literal "if you like."}}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Use 3 dashes for an em-dash. Use 2 dashes for ranges (ex., \"it's all"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal
+      "in chapters 12--14\"). Three dots ... will be converted to an ellipsis."}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "Unicode is supported. ☺"}}]}
+  {:tag :Heading,
+   :attrs {:level 2},
+   :content [{:tag :Text, :attrs {:literal "An h2 header"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "Here's a numbered list:"}}]}
+  {:tag :OrderedList,
+   :attrs {:is-tight? true, :delimiter \., :start-number 1},
+   :content
+   [{:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "first item"}}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "second item"}}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "third item"}}]}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Note again how the actual text starts at 4 columns in (4 characters"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs {:literal "from the left side). Here's a code sample:"}}]}
+  {:tag :IndentedCodeBlock,
+   :attrs
+   {:literal
+    "# Let me re-iterate ...\nfor i in 1 .. 10 { do-something(i) }\n"}}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "As you probably guessed, indented 4 spaces. By the way, instead of"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal
+      "indenting the block, you can use delimited blocks, if you like:"}}]}
+  {:tag :FencedCodeBlock,
+   :attrs
+   {:fence-char \~,
+    :fence-indent 0,
+    :fence-length 3,
+    :info "",
+    :literal
+    "define foobar() {\n    print \"Welcome to flavor country!\";\n}\n"}}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "(which makes copying & pasting easier). You can optionally mark the"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal "delimited block for Pandoc to syntax highlight it:"}}]}
+  {:tag :FencedCodeBlock,
+   :attrs
+   {:fence-char \~,
+    :fence-indent 0,
+    :fence-length 3,
+    :info "python",
+    :literal
+    "import time\n# Quick, count to ten!\nfor i in range(10):\n    # (but not *too* quick)\n    time.sleep(0.5)\n    print i\n"}}
+  {:tag :Heading,
+   :attrs {:level 3},
+   :content [{:tag :Text, :attrs {:literal "An h3 header"}}]}
+  {:tag :Paragraph,
+   :content [{:tag :Text, :attrs {:literal "Now a nested list:"}}]}
+  {:tag :OrderedList,
+   :attrs {:is-tight? false, :delimiter \., :start-number 1},
+   :content
+   [{:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content
+       [{:tag :Text,
+         :attrs {:literal "First, get these ingredients:"}}]}
+      {:tag :BulletList,
+       :attrs {:is-tight? true, :bullet-marker \*},
+       :content
+       [{:tag :ListItem,
+         :content
+         [{:tag :Paragraph,
+           :content [{:tag :Text, :attrs {:literal "carrots"}}]}]}
+        {:tag :ListItem,
+         :content
+         [{:tag :Paragraph,
+           :content [{:tag :Text, :attrs {:literal "celery"}}]}]}
+        {:tag :ListItem,
+         :content
+         [{:tag :Paragraph,
+           :content [{:tag :Text, :attrs {:literal "lentils"}}]}]}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content [{:tag :Text, :attrs {:literal "Boil some water."}}]}]}
+    {:tag :ListItem,
+     :content
+     [{:tag :Paragraph,
+       :content
+       [{:tag :Text,
+         :attrs {:literal "Dump everything in the pot and follow"}}
+        {:tag :SoftLineBreak}
+        {:tag :Text, :attrs {:literal "this algorithm:"}}]}
+      {:tag :IndentedCodeBlock,
+       :attrs
+       {:literal
+        "find wooden spoon\nuncover pot\nstir\ncover pot\nbalance wooden spoon precariously on pot handle\nwait 10 minutes\ngoto first step (or shut off burner when done)\n"}}
+      {:tag :Paragraph,
+       :content
+       [{:tag :Text,
+         :attrs
+         {:literal "Do not bump wooden spoon or it will fall."}}]}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Notice again how text always lines up on 4-space indents (including"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal "that last line which continues item 3 above)."}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "Here's a link to "}}
+    {:tag :Link,
+     :attrs {:title nil, :destination "http://foo.bar"},
+     :content [{:tag :Text, :attrs {:literal "a website"}}]}
+    {:tag :Text, :attrs {:literal ", to a "}}
+    {:tag :Link,
+     :attrs {:title nil, :destination "local-doc.html"},
+     :content
+     [{:tag :Text, :attrs {:literal "local"}}
+      {:tag :SoftLineBreak}
+      {:tag :Text, :attrs {:literal "doc"}}]}
+    {:tag :Text, :attrs {:literal ", and to a "}}
+    {:tag :Link,
+     :attrs {:title nil, :destination "#an-h2-header"},
+     :content
+     [{:tag :Text, :attrs {:literal "section heading in the current"}}
+      {:tag :SoftLineBreak}
+      {:tag :Text, :attrs {:literal "doc"}}]}
+    {:tag :Text, :attrs {:literal ". Here's a footnote [^1]."}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "[^1]: Footnote text goes here."}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "Tables can look like this:"}}]}
+  {:tag :TableBlock,
+   :content
+   [{:tag :TableHead,
+     :content
+     [{:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? true},
+         :content [{:tag :Text, :attrs {:literal "size"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? true},
+         :content [{:tag :Text, :attrs {:literal "material"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? true},
+         :content [{:tag :Text, :attrs {:literal "color"}}]}]}]}
+    {:tag :TableBody,
+     :content
+     [{:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "9"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "leather"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "brown"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "10"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "hemp canvas"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "natural"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "11"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "glass"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "transparent"}}]}]}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Table: Shoes, their sizes, and what they're made of"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "(The above is the caption for the table.) Pandoc also supports"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "multi-line tables:"}}]}
+  {:tag :TableBlock,
+   :content
+   [{:tag :TableHead,
+     :content
+     [{:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? true},
+         :content [{:tag :Text, :attrs {:literal "keyword"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? true},
+         :content [{:tag :Text, :attrs {:literal "text"}}]}]}]}
+    {:tag :TableBody,
+     :content
+     [{:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "red"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "Sunsets, apples, and"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell, :attrs {:is-header? false}}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "other red or reddish"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell, :attrs {:is-header? false}}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "things."}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell, :attrs {:is-header? false}}
+        {:tag :TableCell, :attrs {:is-header? false}}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell,
+         :attrs {:is-header? false},
+         :content [{:tag :Text, :attrs {:literal "green"}}]}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "Leaves, grass, frogs"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell, :attrs {:is-header? false}}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "and other things it's"}}]}]}
+      {:tag :TableRow,
+       :content
+       [{:tag :TableCell, :attrs {:is-header? false}}
+        {:tag :TableCell,
+         :attrs {:is-header? false},
+         :content
+         [{:tag :Text, :attrs {:literal "not easy being."}}]}]}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "A horizontal rule follows."}}]}
+  {:tag :ThematicBreak}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "Here's a definition list:"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "apples"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal ": Good for making applesauce."}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "oranges"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal ": Citrus!"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "tomatoes"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal ": There's no \"e\" in tomatoe."}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Again, text is indented 4 spaces. (Put a blank line between each"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal "term/definition pair to spread things out more.)"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "Here's a \"line block\":"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "| Line one"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "|   Line too"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text, :attrs {:literal "| Line tree"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs {:literal "and images can be specified like so:"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Image,
+     :attrs
+     {:title "An exemplary image", :destination "example-image.jpg"},
+     :content [{:tag :Text, :attrs {:literal "example image"}}]}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "Inline math equations go in like so: $\\omega = d\\phi / dt$. Display"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal
+      "math should get its own line and be put in in double-dollarsigns:"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text, :attrs {:literal "$$I = \\int \\rho R^{2} dV$$"}}]}
+  {:tag :Paragraph,
+   :content
+   [{:tag :Text,
+     :attrs
+     {:literal
+      "And note that you can backslash-escape any punctuation characters"}}
+    {:tag :SoftLineBreak}
+    {:tag :Text,
+     :attrs
+     {:literal
+      "which you wish to be displayed literally, ex.: `foo`, *bar*, etc."}}]}]}
