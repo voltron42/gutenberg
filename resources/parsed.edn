@@ -157,7 +157,7 @@
        [{:tag :Text,
          :attrs {:literal "First, get these ingredients:"}}]}
       {:tag :BulletList,
-       :attrs {:is-tight? true, :bullet-marker \*},
+       :attrs {:is-tight? false, :bullet-marker \*},
        :content
        [{:tag :ListItem,
          :content
