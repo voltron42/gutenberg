@@ -29,6 +29,26 @@
      "addddcbddcbdcccc"
      "abdddcbddcbdcdcc"]))
 
+(def edge-tile
+  (str/join
+    "|"
+    ["aabddcbddcbdcdcc"
+     "aabbdcdddcbdcdcc"
+     "bbabdcccccbdcccc"
+     "dbbabcbdddbdcdcc"
+     "dddbacbddcbdcdcc"
+     "cccccbbddccccdcc"
+     "dddddbaddcddcdcc"
+     "ddddddbadcbdcdcc"
+     "dddddcddacbdcdcc"
+     "cccccccccdbdcdcc"
+     "bdcbbbbbbbadcdcc"
+     "ddcddddddddbcdcc"
+     "ccccccccccccdbcc"
+     "dddddcdddddddbcc"
+     "cccccccccccccccc"
+     "cccccccccccccccc"]))
+
 (def wall-tile
   (str/join
     "|"
@@ -102,3 +122,25 @@
                 [:wall :wall :turn-left "01" "02" "03" "04" "05" "06"]
                 [:wall :wall :turn-left :flip-over "91" "92" "93" "94" "95" "96"]
                 (into [:floor :floor] (for [x (range 1 9) y (range 1 7)] (str x y)))]))
+
+(deftest test-pixel-w-hall
+  (build-files "open.xml" "door.png"
+               [{:corner corner-tile
+                 :wall wall-tile
+                 :edge edge-tile
+                 :floor floor-tile}
+                {:floor ["lightgrey" "grey" "darkgrey"]
+                 :wall ["white" "magenta" "black" "purple"]}
+                10
+                [:corner :wall "00"]
+                [:corner :wall :flip-down "07"]
+                [:corner :wall :flip-over "90"]
+                [:corner :wall :flip-down :flip-over "97"]
+                [:edge :wall "30"]
+                [:edge :wall :flip-over "60"]
+                [:wall :wall "10" "20" "70" "80"]
+                [:wall :wall :flip-down "17" "27" "37" "47" "57" "67" "77" "87"]
+                [:wall :wall :turn-left "01" "02" "03" "04" "05" "06"]
+                [:wall :wall :turn-left :flip-over "91" "92" "93" "94" "95" "96"]
+                (into [:floor :floor "40" "50"] (for [x (range 1 9) y (range 1 7)] (str x y)))]))
+
