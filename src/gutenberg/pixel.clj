@@ -11,9 +11,24 @@
 
 (defmethod ^:private process-color :rgb [[_ {:keys [r g b]}]] (str "rgb(" r "," g "," b ")"))
 
-(defmulti ^:private get-action identity)
+(defmulti ^:private do-action
+          (fn [_ action]
+            action))
 
-(defmethod ^:private get-action :default [_] identity)
+(defmethod ^:private do-action :default [point _] point)
+
+(defmethod ^:private do-action :turn-right
+  [{:keys [x y]} _] {:x (- 15 y) :y x})
+
+(defmethod ^:private do-action :turn-left
+  [{:keys [x y]} _] {:x y :y (- 15 x)})
+
+(defmethod ^:private do-action :flip-down
+  [{:keys [x y]} _] {:x x :y (- 15 y)})
+
+(defmethod ^:private do-action :flip-over
+  [{:keys [x y]} _] {:x (- 15 x) :y y})
+
 
 (defn- parse-tile [tile]
   (let [rows (mapv vector (range 16) (str/split tile #"[|]"))
@@ -32,27 +47,49 @@
     {:bg bg :pixels (reduce-kv #(assoc %1 %2 (map (fn [{:keys [x y]}] {:x x :y y}) %3)) {} (dissoc pixels bg))}))
 
 (defn- explode-svg [pixel-size defs uses width height]
-  (let [tile-size (* 16 pixel-size)]
-    (into [:svg {:viewBox (str "0 0 " width " " height)} (into [:defs]
-                         (mapv (fn [{:keys [id bg pixels]}]
-                                 (into
-                                   [:g {:id id}
-                                    [:rect {:width tile-size
-                                            :height tile-size
-                                            :fill bg}]]
-                                   (map (fn [{:keys [c x y]}]
-                                          [:rect {:x (* x pixel-size)
-                                                  :y (* y pixel-size)
-                                                  :width pixel-size
-                                                  :height pixel-size
-                                                  :fill c}])
-                                        pixels)))
-                               defs))]
-          (mapv (fn [{:keys [id x y]}]
-                  [:use {:x (* x tile-size)
-                         :y (* y tile-size)
-                         :href (str "#" id)}])
-                uses))))
+  (let [tile-size (* 16 pixel-size)
+        [width height] (map (partial * tile-size) [width height])]
+    {:tag :svg
+     :attrs {:width width :height height
+             :xmlns "http://www.w3.org/2000/svg"
+             :xmlns:xlink "http://www.w3.org/1999/xlink"}
+     :content (into [{:tag :defs
+                      :content (mapv (fn [{:keys [id bg pixels]}]
+                                       {:tag :g
+                                        :attrs {:id id}
+                                        :content (into [{:tag :rect
+                                                         :attrs {:width tile-size
+                                                                 :height tile-size
+                                                                 :stroke "none"
+                                                                 :fill bg}}]
+                                                       (map (fn [{:keys [c x y]}]
+                                                              {:tag :rect
+                                                               :attrs {:x (* x pixel-size)
+                                                                       :y (* y pixel-size)
+                                                                       :width pixel-size
+                                                                       :height pixel-size
+                                                                       :stroke "none"
+                                                                       :fill c}})
+                                                            pixels))})
+                                    defs)}]
+                    (reduce
+                      (fn [out {:keys [id x y]}]
+                        (concat out
+                                [{:tag :use
+                                  :attrs {:x (* x tile-size)
+                                          :y (* y tile-size)
+                                          :xlink:href (str "#" id)}}
+                                 {:tag :rect
+                                  :attrs {:x (* x tile-size)
+                                          :y (* y tile-size)
+                                          :width tile-size
+                                          :height tile-size
+                                          :stroke "black"
+                                          :stroke-width 1
+                                          :fill "none"}}
+                                 ]))
+                      []
+                      uses))}))
 
 (defn build-svg-from-tile-doc [tile-doc]
   (when-let [error (s/explain-data ::pixel/tile-doc tile-doc)]
@@ -63,7 +100,12 @@
         list (into (sorted-map) (mapv vector (range) list))
         {:keys [defs uses]} (reduce-kv
                               (fn [{:keys [defs uses]} index {:keys [name palette-name actions locs]}]
-                                (let [{:keys [bg pixels]} (get tiles name)
+                                (let [actions (if (empty? actions) [] actions)
+                                      {:keys [bg pixels]} (get tiles name)
+                                      pixels (reduce-kv #(assoc %1 %2 (mapv (fn [pixel]
+                                                                              (reduce do-action pixel actions))
+                                                                            %3))
+                                                        {} pixels)
                                       palette (get palettes palette-name)
                                       id (str "tile" index)
                                       bg (get palette bg)]
