@@ -1,0 +1,28 @@
+[{:brick-corner "aaaaaaaaaaaaaaaa|abbbbbbbbdcbbbbb|abcccdddddcbddbd|abccccddddcddddd|abdccccdddcddddd|abddcccccccccccc|abdddcccbbbbdcbb|abdddcccdddddcdd|abdddcbdccdddcdd|abbddcbdcccccccc|abdddcccccccbbbb|abdddcdddcccdddd|abbddcbddcbccccc|acccccbddcbdccdd|addddcbddcbdcccc|abdddcbddcbdcdcc"
+  :brick-edge "aabddcbddcbdcdcc|aabbdcdddcbdcdcc|bbabdcccccbdcccc|dbbabcbdddbdcdcc|dddbacbddcbdcdcc|cccccbbddccccdcc|dddddbaddcddcdcc|ddddddbadcbdcdcc|dddddcddacbdcdcc|cccccccccdbdcdcc|bdcbbbbbbbadcdcc|ddcddddddddbcdcc|ccccccccccccdbcc|dddddcdddddddbcc|cccccccccccccccc|cccccccccccccccc"
+  :brick-wall "aaaaaaaaaaaaaaaa|bdcbbbbbbdcbbbbb|ddcbddbdddcbddbd|ddcdddddddcddddd|ddcdddddddcddddd|cccccccccccccccc|bbbbdcbbbbbbdcbb|dddddcdddddddcdd|dddddcdddddddcdd|cccccccccccccccc|bdcbbbbbbdcbbbbb|ddcdddddddcddddd|cccccccccccccccc|dddddcdddddddcdd|cccccccccccccccc|cccccccccccccccc"
+  :stone-floor "bcaabaabbcaabaaa|abcaaacbbbcaaaaa|aabcccbaaabcabaa|aabbbbaaaaabcaba|aabbaaaabacbbaaa|acbaabaaacbbbcaa|cbaabaaacbaaabcc|bbabaaacbaaaaabb|bbcaaacbaaaaaacb|aabcccbaaaabacba|aaabbbaaaabacbaa|aaaabaababacbbaa|abaabcaaaacbbbaa|aabaabccccbaabca|aaabaabbbbaaaabc|caaaaaabbaaaaaab"}
+ {:stone ["lightgreen" "green" "darkgreen"]
+  :brick ["white" "pink" "black" "purple"]}
+ 5
+ {:single [[:stone-floor :stone :a/a]]
+  :simple-room [[:brick-corner :brick :a/a]
+                [:brick-corner :brick :flip-down :a/h]
+                [:brick-corner :brick :flip-over :j/a]
+                [:brick-corner :brick :flip-down :flip-over :j/h]
+                [:brick-wall :brick :bi/a]
+                [:brick-wall :brick :flip-down :bi/h]
+                [:brick-wall :brick :turn-left :a/bg]
+                [:brick-wall :brick :turn-left :flip-over :j/bg]
+                [:stone-floor :stone :bi/bg]]
+  :room-with-door [[:brick-corner :brick :a/a]
+                   [:brick-corner :brick :flip-down :a/h]
+                   [:brick-corner :brick :flip-over :j/a]
+                   [:brick-corner :brick :flip-down :flip-over :j/h]
+                   [:brick-edge :brick :d/a]
+                   [:brick-edge :brick :flip-over :g/a]
+                   [:brick-wall :brick :bc/a :hi/a]
+                   [:brick-wall :brick :flip-down :bi/h]
+                   [:brick-wall :brick :turn-left :a/bg]
+                   [:brick-wall :brick :turn-left :flip-over :j/bg]
+                   [:stone-floor :stone :ef/a :bi/bg]]}]

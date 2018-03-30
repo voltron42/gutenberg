@@ -3,91 +3,11 @@
             [gutenberg.pixel :as pixel]
             [gutenberg.img :as img]
             [clojure.string :as str]
-            [clojure.pprint :as pprint]
             [clojure.xml :as xml]
             [clojure.pprint :as pp]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.edn :as edn])
   (:import (java.io FileOutputStream)))
-
-(def corner-tile
-  (str/join
-    "|"
-    ["aaaaaaaaaaaaaaaa"
-     "abbbbbbbbdcbbbbb"
-     "abcccdddddcbddbd"
-     "abccccddddcddddd"
-     "abdccccdddcddddd"
-     "abddcccccccccccc"
-     "abdddcccbbbbdcbb"
-     "abdddcccdddddcdd"
-     "abdddcbdccdddcdd"
-     "abbddcbdcccccccc"
-     "abdddcccccccbbbb"
-     "abdddcdddcccdddd"
-     "abbddcbddcbccccc"
-     "acccccbddcbdccdd"
-     "addddcbddcbdcccc"
-     "abdddcbddcbdcdcc"]))
-
-(def edge-tile
-  (str/join
-    "|"
-    ["aabddcbddcbdcdcc"
-     "aabbdcdddcbdcdcc"
-     "bbabdcccccbdcccc"
-     "dbbabcbdddbdcdcc"
-     "dddbacbddcbdcdcc"
-     "cccccbbddccccdcc"
-     "dddddbaddcddcdcc"
-     "ddddddbadcbdcdcc"
-     "dddddcddacbdcdcc"
-     "cccccccccdbdcdcc"
-     "bdcbbbbbbbadcdcc"
-     "ddcddddddddbcdcc"
-     "ccccccccccccdbcc"
-     "dddddcdddddddbcc"
-     "cccccccccccccccc"
-     "cccccccccccccccc"]))
-
-(def wall-tile
-  (str/join
-    "|"
-    ["aaaaaaaaaaaaaaaa"
-     "bdcbbbbbbdcbbbbb"
-     "ddcbddbdddcbddbd"
-     "ddcdddddddcddddd"
-     "ddcdddddddcddddd"
-     "cccccccccccccccc"
-     "bbbbdcbbbbbbdcbb"
-     "dddddcdddddddcdd"
-     "dddddcdddddddcdd"
-     "cccccccccccccccc"
-     "bdcbbbbbbdcbbbbb"
-     "ddcdddddddcddddd"
-     "cccccccccccccccc"
-     "dddddcdddddddcdd"
-     "cccccccccccccccc"
-     "cccccccccccccccc"]))
-
-(def floor-tile
-  (str/join
-    "|"
-    ["bcaabaabbcaabaaa"
-     "abcaaacbbbcaaaaa"
-     "aabcccbaaabcabaa"
-     "aabbbbaaaaabcaba"
-     "aabbaaaabacbbaaa"
-     "acbaabaaacbbbcaa"
-     "cbaabaaacbaaabcc"
-     "bbabaaacbaaaaabb"
-     "bbcaaacbaaaaaacb"
-     "aabcccbaaaabacba"
-     "aaabbbaaaabacbaa"
-     "aaaabaababacbbaa"
-     "abaabcaaaacbbbaa"
-     "aabaabccccbaabca"
-     "aaabaabbbbaaaabc"
-     "caaaaaabbaaaaaab"]))
 
 (defn- build-files [xml-file img-file tile-doc]
   (let [svg (pixel/build-svg-from-tile-doc tile-doc)
@@ -99,48 +19,33 @@
     (spit (str "resources/" xml-file) xml)
     (img/rasterize :png {} svg out)))
 
+(def ^:private doc (edn/read-string (slurp "resources/pixel-tiles.edn")))
+
 (deftest test-pixel-small
-  (build-files "one-tile.xml" "small.png"
-               [{:corner corner-tile}
-                {:wall ["white" "pink" "black" "purple"]}
-                [:corner :wall :flip-over "00"]]))
+  (let [[tiles palettes size {:keys [single]}] doc]
+    (build-files "one-tile.xml" "small.png"
+                 (into [tiles palettes] single))))
 
 (deftest test-pixel-big
-  (build-files "tiles.xml" "map.png"
-               [{:corner corner-tile
-                 :wall wall-tile
-                 :floor floor-tile}
-                {:floor ["lightgrey" "grey" "darkgrey"]
-                 :wall ["white" "pink" "black" "purple"]}
-                10
-                [:corner :wall "00"]
-                [:corner :wall :flip-down "07"]
-                [:corner :wall :flip-over "90"]
-                [:corner :wall :flip-down :flip-over "97"]
-                [:wall :wall "10" "20" "30" "40" "50" "60" "70" "80"]
-                [:wall :wall :flip-down "17" "27" "37" "47" "57" "67" "77" "87"]
-                [:wall :wall :turn-left "01" "02" "03" "04" "05" "06"]
-                [:wall :wall :turn-left :flip-over "91" "92" "93" "94" "95" "96"]
-                (into [:floor :floor] (for [x (range 1 9) y (range 1 7)] (str x y)))]))
+  (let [[tiles palettes size {:keys [simple-room]}] doc]
+    (build-files "tiles.xml" "map.png"
+                 (into [tiles palettes size] simple-room))))
 
 (deftest test-pixel-w-hall
-  (build-files "open.xml" "door.png"
-               [{:corner corner-tile
-                 :wall wall-tile
-                 :edge edge-tile
-                 :floor floor-tile}
-                {:floor ["lightgrey" "grey" "darkgrey"]
-                 :wall ["white" "magenta" "black" "purple"]}
-                10
-                [:corner :wall "00"]
-                [:corner :wall :flip-down "07"]
-                [:corner :wall :flip-over "90"]
-                [:corner :wall :flip-down :flip-over "97"]
-                [:edge :wall "30"]
-                [:edge :wall :flip-over "60"]
-                [:wall :wall "10" "20" "70" "80"]
-                [:wall :wall :flip-down "17" "27" "37" "47" "57" "67" "77" "87"]
-                [:wall :wall :turn-left "01" "02" "03" "04" "05" "06"]
-                [:wall :wall :turn-left :flip-over "91" "92" "93" "94" "95" "96"]
-                (into [:floor :floor "40" "50"] (for [x (range 1 9) y (range 1 7)] (str x y)))]))
+  (let [[tiles palettes size {:keys [room-with-door]}] doc]
+    (build-files "open.xml" "door.png"
+                 (into [tiles palettes size] room-with-door))))
 
+(deftest test-explode-tile
+  (let [full "aaaaaaaaaaaaaaaa|abbbbbbbbdcbbbbb|abcccdddddcbddbd|abccccddddcddddd|abdccccdddcddddd|abddcccccccccccc|abdddcccbbbbdcbb|abdddcccdddddcdd|abdddcbdccdddcdd|abbddcbdcccccccc|abdddcccccccbbbb|abdddcdddcccdddd|abbddcbddcbccccc|acccccbddcbdccdd|addddcbddcbdcccc|abdddcbddcbdcdcc"
+        abbrev "a|ab7dcb|abc2d4cbddbd|abc3d3cd|abdc3d2cd|abddc|abd2c2b3dcb|abd2c2d4cd|abd2cbdccd2cd|abbddcbdc|abd2c6b|abd2cd2c2d|abbddcbddcbc|ac4bddcbdccd|ad3cbddcbdc|abd2cbddcbdcdc"
+        smallest "a"
+        all-As (str/join "|" (repeat 16 (apply str (repeat 16 "a"))))]
+
+    (is (= full (pixel/explode-tile full)))
+    (is (= full (pixel/explode-tile abbrev)))
+    (is (= all-As (pixel/explode-tile all-As)))
+    (is (= all-As (pixel/explode-tile smallest)))
+
+    (pp/pprint (str/split (pixel/explode-tile "a||b||||a||||b||||a") #"[|]"))
+    (pp/pprint (str/split (pixel/explode-tile "a|b||a||b||a||b||a||b||a") #"[|]"))))

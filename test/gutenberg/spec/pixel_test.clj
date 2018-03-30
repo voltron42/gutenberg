@@ -133,7 +133,14 @@
     (= nil
        (s/explain-data
          ::pixel/tile-listing
-         [:corner :wall "00"]))))
+         [:corner :wall :a/a]))))
+
+(deftest test-tile-listing-1
+  (is
+    (= nil
+       (s/explain-data
+         ::pixel/tile-listing
+         [:corner :wall :a-b/a]))))
 
 (deftest test-doc
   (let [tile-doc
@@ -143,15 +150,15 @@
          {:floor ["lightgrey" "grey" "darkgrey"]
           :wall ["white" "pink" "purple" "black"]}
          10
-         [:corner :wall "00"]
-         [:corner :wall :flip-down "07"]
-         [:corner :wall :flip-over "90"]
-         [:corner :wall :flip-down :flip-over "97"]
-         [:wall :wall "10" "20" "30" "40" "50" "60" "70" "80"]
-         [:wall :wall :flip-down "17" "27" "37" "47" "57" "67" "77" "87"]
-         [:wall :wall :turn-left "01" "02" "03" "04" "05" "06"]
-         [:wall :wall :turn-left :flip-over "91" "92" "93" "94" "95" "96"]
-         (into [:floor :floor] (for [x (range 1 9) y (range 1 7)] (str x y)))]]
+         [:corner :wall :a/a]
+         [:corner :wall :flip-down :a/h]
+         [:corner :wall :flip-over :j/a]
+         [:corner :wall :flip-down :flip-over :j/h]
+         [:wall :wall :b-i/a]
+         [:wall :wall :flip-down :b-i/h]
+         [:wall :wall :turn-left :a/b-g]
+         [:wall :wall :turn-left :flip-over :j/b-g]
+         [:floor :floor :b-i/b-g]]]
     (is
       (= nil
          (s/explain-data
