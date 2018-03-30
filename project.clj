@@ -8,4 +8,5 @@
                  [org.clojars.pallix/batik "1.7.0"]
                  [ring/ring-core "1.6.2"]
                  [com.atlassian.commonmark/commonmark "0.11.0"]
-                 [com.atlassian.commonmark/commonmark-ext-gfm-tables "0.9.0"]])
+                 [com.atlassian.commonmark/commonmark-ext-gfm-tables "0.9.0"]
+                 [short-hand "0.1.0-SNAPSHOT"]])

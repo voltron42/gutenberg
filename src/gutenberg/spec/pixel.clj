@@ -16,7 +16,7 @@
 (s/def ::tile-loc (s/and string? (partial re-matches coordinate)))
 
 (s/def ::palette (s/and vector?
-                        (s/cat :colors (s/+ ::svg/color))))
+                        (s/+ ::svg/color)))
 
 (s/def ::palette-name keyword?)
 
@@ -35,7 +35,7 @@
 (s/def ::tile-doc
   (s/and vector?
          (s/cat :tiles ::tile-set
-                :palette ::palette-set
+                :palettes ::palette-set
                 :pixel-size (s/? int?)
                 :list (s/+ ::tile-listing)
                 )))

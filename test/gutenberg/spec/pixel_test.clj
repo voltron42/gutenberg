@@ -4,24 +4,25 @@
             [gutenberg.spec.pixel :as pixel]
             [clojure.string :as str]))
 
-(def corner-tile (str/join
-                   "|"
-                   ["aaaaaaaaaaaaaaaa"
-                    "abbbbbbbbdcbbbbb"
-                    "abcccdddddcbddbd"
-                    "abccccddddcddddd"
-                    "abdccccdddcddddd"
-                    "abddcccccccccccc"
-                    "abdddcccbbbbdcbb"
-                    "abdddcccdddddcdd"
-                    "abdddcbdccdddcdd"
-                    "abbddcbdcccccccc"
-                    "abdddcccccccbbbb"
-                    "abdddcdddcccdddd"
-                    "abbddcbddcbccccc"
-                    "acccccbddcbdccdd"
-                    "addddcbddcbdcccc"
-                    "abdddcbddcbdcdcc"]))
+(def corner-tile
+  (str/join
+    "|"
+    ["aaaaaaaaaaaaaaaa"
+     "abbbbbbbbdcbbbbb"
+     "abcccdddddcbddbd"
+     "abccccddddcddddd"
+     "abdccccdddcddddd"
+     "abddcccccccccccc"
+     "abdddcccbbbbdcbb"
+     "abdddcccdddddcdd"
+     "abdddcbdccdddcdd"
+     "abbddcbdcccccccc"
+     "abdddcccccccbbbb"
+     "abdddcdddcccdddd"
+     "abbddcbddcbccccc"
+     "acccccbddcbdccdd"
+     "addddcbddcbdcccc"
+     "abdddcbddcbdcdcc"]))
 
 (def edge-tile
   (str/join
@@ -157,7 +158,4 @@
            ::pixel/tile-doc
            tile-doc)))
 
-    (println (pr-str (s/conform ::pixel/tile-doc tile-doc)))
-    )
-
-  )
+    (println (pr-str (s/conform ::pixel/tile-doc tile-doc)))))
