@@ -1,7 +1,7 @@
-[{:brick-corner "aaaaaaaaaaaaaaaa|abbbbbbbbdcbbbbb|abcccdddddcbddbd|abccccddddcddddd|abdccccdddcddddd|abddcccccccccccc|abdddcccbbbbdcbb|abdddcccdddddcdd|abdddcbdccdddcdd|abbddcbdcccccccc|abdddcccccccbbbb|abdddcdddcccdddd|abbddcbddcbccccc|acccccbddcbdccdd|addddcbddcbdcccc|abdddcbddcbdcdcc"
-  :brick-edge "aabddcbddcbdcdcc|aabbdcdddcbdcdcc|bbabdcccccbdcccc|dbbabcbdddbdcdcc|dddbacbddcbdcdcc|cccccbbddccccdcc|dddddbaddcddcdcc|ddddddbadcbdcdcc|dddddcddacbdcdcc|cccccccccdbdcdcc|bdcbbbbbbbadcdcc|ddcddddddddbcdcc|ccccccccccccdbcc|dddddcdddddddbcc|cccccccccccccccc|cccccccccccccccc"
-  :brick-wall "aaaaaaaaaaaaaaaa|bdcbbbbbbdcbbbbb|ddcbddbdddcbddbd|ddcdddddddcddddd|ddcdddddddcddddd|cccccccccccccccc|bbbbdcbbbbbbdcbb|dddddcdddddddcdd|dddddcdddddddcdd|cccccccccccccccc|bdcbbbbbbdcbbbbb|ddcdddddddcddddd|cccccccccccccccc|dddddcdddddddcdd|cccccccccccccccc|cccccccccccccccc"
-  :stone-floor "bcaabaabbcaabaaa|abcaaacbbbcaaaaa|aabcccbaaabcabaa|aabbbbaaaaabcaba|aabbaaaabacbbaaa|acbaabaaacbbbcaa|cbaabaaacbaaabcc|bbabaaacbaaaaabb|bbcaaacbaaaaaacb|aabcccbaaaabacba|aaabbbaaaabacbaa|aaaabaababacbbaa|abaabcaaaacbbbaa|aabaabccccbaabca|aaabaabbbbaaaabc|caaaaaabbaaaaaab"}
+[{:brick-corner "a|ab7dcb|abc2d4cbddbd|abc3d3cd|abdc3d2cd|abddc|abd2c2b3dcb|abd2c2d4cd|abd2cbdccd2cd|abbddcbdc|abd2c6b|abd2cd2c2d|abbddcbddcbc|ac4bddcbdccdd|ad3cbddcbdc|abd2cbddcbdcdcc"
+  :brick-edge "aabddcbddcbdcdcc|aabbdcd3cbdcdcc|bbabdc4bdc|dbbabcbd2bdcdcc|d2bacbddcbdcdcc|c4bbddc3dcc|d4baddcddcdcc|d5badcbdcdcc|d4cddacbdcdcc|c8dbdcdcc|bdcb6adcdcc|ddcd7bcdcc|c9ccdbcc|d4cd6bcc|c"
+  :brick-wall "a|bdcb5dcb|ddcbddbd2cbddbd|ddcd6cd||c|b3dcb5dcb|d4cd6cd||c|bdcb5dcb|ddcd6cd|c|d4cd6cd|c"
+  :stone-floor "bcaabaabbcaaba|abca2cb2ca|aabc2ba2bcaba|aab3a4bcaba|aabba3bacbba|acbaaba2cb2caa|cbaaba2cba2bc|bbaba2cba4b|bbca2cba5cb|aabc2ba3bacba|a2b2a3bacba|a3baababacbba|abaabca3cb2a|aabaabc3baabca|a2baab3a3bc|ca5bba5b"}
  {:stone ["lightgreen" "green" "darkgreen"]
   :brick ["white" "pink" "black" "purple"]}
  5
