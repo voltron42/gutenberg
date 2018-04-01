@@ -53,7 +53,7 @@ aabbcccccdbbccdd
 aabccddddbbbbccd
 
 wet-floor
-b|a3bba5bbaa|b|b|b|a3bba5bbaa|b|b|b|a3bba5bbaa|b|b|b|a3bba5bbaa|b|b
+b|a3bba5bbaa|b|||a3bba5bbaa|b|||a3bba5bbaa|b|||a3bba5bbaa|b
 
 stairs
 a|b||a||b||a||b||a||b||a

@@ -120,6 +120,36 @@
         [max-x max-y] (mapv #(if (nil? %2) %1 %2) [min-x min-y] [max-x max-y])]
     (for [x (range min-x (inc max-x)) y (range min-y (inc max-y))] [x y])))
 
+(defn- condenser [coll truncate-fn concat-fn]
+  (loop [items coll
+         out ""]
+    (let [f (first items)
+          r (rest items)
+          n (count (take-while (partial = f) r))
+          n (truncate-fn n)
+          r (drop n r)
+          f (if (or (zero? n) (empty? r)) (str f) (str f (concat-fn)))
+          out (str out f)]
+      (if (empty? r)
+        out
+        (recur r out)))))
+
+(defn- condense-row [row]
+  (condenser row #(if (< 9 %) 9 %) identity))
+
+(defn- condense-rows [rows]
+  (condenser rows identity #(repeat (inc %) "|")))
+
+(defn condense-tile [tile]
+  (let [tile (str/join "|" (str/split tile #"\n"))
+        rows (str/split tile #"[|]")
+        rows (mapv condense-row rows)]
+    (condense-rows rows)))
+
+(defn pivot-tile [tile]
+  (let [tile (explode-tile (str/join "|" (str/split tile #"\n")))]
+    (str/join "\n" (apply mapv #(apply str %&) (str/split tile #"[|]")))))
+
 (defn build-svg-from-tile-doc [tile-doc]
   (when-let [error (s/explain-data ::pixel/tile-doc tile-doc)]
     (throw (ExceptionInfo. "Error in tile-doc" {:error error})))
