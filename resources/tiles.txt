@@ -96,3 +96,20 @@ bbbbbbbbbbbddcbb
 tile-floor
 a7b|||||||b7a
 
+shiny-tile
+a|aab9bbaa|ab3aabba2b3ba|abbaabbaab5a|abaabbaab6a|ababbaab7a|ab2aab8a|abbaab9a|abaab9ba|abab9bba||ab9b3a|||aac9ccaa|a
+
+bubble-tile
+b2a9b2|bbaab7aabb|baaba3b4aab|aabaab8aa|abaab9ba|abab9bba||ab9b3a|abab9bba|ab9bbcba||ab9bccba|aab8ccbaa|baab2c5baab|bbaab7aabb|b2a9b
+
+road
+ab5aab5a|b|b3cb6cb2|b|bcb6cb5|b4ab6abb|b|ab5aab5a|||b|b3cb6cb2|b|bcb6cb5|b4ab6abb|b|ab5aab5a
+
+
+
+
+
+
+
+
+
