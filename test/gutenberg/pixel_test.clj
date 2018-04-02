@@ -50,4 +50,9 @@
     (pp/pprint (str/split (pixel/explode-tile "a||b||||a||||b||||a") #"[|]"))
     (pp/pprint (str/split (pixel/explode-tile "a|b||a||b||a||b||a||b||a") #"[|]"))))
 
+(deftest test-pixel-stairs
+  (let [[tiles palettes size {:keys [endless-stairs]}] doc]
+    (build-files "stairs.xml" "stairs.png"
+                 (into [tiles palettes size] endless-stairs))))
+
 
