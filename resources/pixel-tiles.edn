@@ -12,9 +12,8 @@
   :tile-floor "a7b|||||||b7a"
   :shiny-tile "a|aab9bba|ab3aabba2b3ba|abbaabbaab5a|abaabbaab6a|ababbaab7a|ab2aab8a|abbaab9a|abaab9ba|abab9bba||ab9b3a|||aac9cca|a"
   :bubble-tile "b2a9b|bbaab7aab|baaba3b4aab|aabaab8a|abaab9ba|abab9bba||ab9b3a|abab9bba|ab9bbcba||ab9bccba|aab8ccba|baab2c5baab|bbaab7aab|b2a9b"
-  :road "ab5aab5a|b|b3cb6cb|b|bcb6cb|b4ab6ab|b|ab5aab5a|||b|b3cb6cb|b|bcb6cb|b4ab6abb|b|ab5aab5a"
   :stair-down "c|ca9a3c|cadc5d4ac|cadc5da2dac|cad7a2dac||cad3b2da2dac|||cadccdb2da2dac||||cad9ddac|ca9a3c|c"
-  :stone-wall "a|b|cbbc5bbc|c|||c4ddc5ddc|c4bbc5bbc|c|c2ddc5ddc|d|b4ccb5ccb|c4bbc5bbc|ddc5ddc|c|d"
+  :stone-wall "a|b|cbbc5bbc|c||c4ddc5ddc|c4bbc5bbc|c|c2ddc5ddc|d|b4ccb5ccb|c4bbc5bbc|ddc5ddc|c|d"
   :stone-corner "a|ab|abddc4bbc|abdddc|abcdddc|abccd2c5ddc|abc2d2c4bbc|abc3ddc|abc5ddc|abc2dbcd|abc2dbccd2b|abc6d2c|abc6dbdc|abbc5dbcddc|abbc5dbccd|abc6dbc2d"
   :stone-edge "aac6dbc2d|aabc5dcbccd|cbabc4dcbccd|ccbabc2ddbc2d|c2babccddbc2d|c3babccdbc2d|c4babcdbcdcd|c5bacdbcdcd|c2ddc2adbc2d|d8cbc2d|b4ccb2ac2d|c4bbc3bccd|ddc9bcd|c9c2bd|d"
   :floral-stone "aab4a3ba|aab4a4ba|baba2ba2bab|aba4ba3ba|aba4b5a|abba2b4aaba|baab7a2b|a4b5a3b|aabaab5a3b|ba3b6a2b|bbaaba2ba2b2a|ab2a3ba3ba|ab2a3baababa|ab3aab2a2ba|bba2b7aab|aba2b5a"
@@ -26,7 +25,7 @@
   :stair-up "c9d|ca8db3d|cab3d4b3d|cab3db2db3d|cad4b2db3d|cadb2db2db3d|cadb2db2da3d|cadb2da2d|cada2d|cad||cab9b2c|ca9a3c|c"
   :standing-brazier "acd9ddca|cda3dadda3dc|da3daadadba2d|da2dabadaadbaad|daadaabbabadbaad|daadabbcbbadbaad|daadabbccbadbaad|da2dabddadba2d|da9a3d|dfa9aafd|daf9ffad|da9a3d|dea2da3da2ed|edea2daada2ede|dade9dad|ddfd9fdd"
   }
- {:stone ["lightgreen" "green" "darkgreen"]
+ {:stone ["lightgreen" "green" "darkgreen" "black"]
   :brick ["white" "pink" "black" "purple"]
   :sand ["white" "tan" "brown" "black"]
   :stairs ["tan" "black"]}

@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [clojure.spec.alpha :as s]
             [gutenberg.spec.pixel :as pixel]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.edn :as edn]))
 
 (def corner-tile
   (str/join
@@ -166,3 +167,87 @@
            tile-doc)))
 
     (println (pr-str (s/conform ::pixel/tile-doc tile-doc)))))
+
+(def ^:private doc (edn/read-string (slurp "resources/pixel-tiles.edn")))
+
+(deftest test-tiles
+  (let [{:keys [cave-wall
+                stone-edge
+                brick-edge
+                block
+                floral-stone
+                broken-floor
+                cave-edge
+                shiny-tile
+                cave-floor
+                stone-corner
+                shuttered-door
+                stone-floor
+                stair-up
+                cave-corner
+                wet-floor
+                stairs
+                tile-floor
+                wall-braziers
+                standing-brazier
+                stair-down
+                brick-corner
+                stone-tile
+                statue
+                bubble-tile
+                stone-wall
+                brick-wall]} (first doc)]
+
+    (is (= nil (s/explain-data ::pixel/tile cave-wall)))
+
+    (is (= nil (s/explain-data ::pixel/tile stone-edge)))
+
+    (is (= nil (s/explain-data ::pixel/tile brick-edge)))
+
+    (is (= nil (s/explain-data ::pixel/tile block)))
+
+    (is (= nil (s/explain-data ::pixel/tile floral-stone)))
+
+    (is (= nil (s/explain-data ::pixel/tile broken-floor)))
+
+    (is (= nil (s/explain-data ::pixel/tile shiny-tile)))
+
+    (is (= nil (s/explain-data ::pixel/tile cave-edge)))
+
+    (is (= nil (s/explain-data ::pixel/tile stone-corner)))
+
+    (is (= nil (s/explain-data ::pixel/tile shuttered-door)))
+
+    (is (= nil (s/explain-data ::pixel/tile cave-floor)))
+
+    (is (= nil (s/explain-data ::pixel/tile stone-floor)))
+
+    (is (= nil (s/explain-data ::pixel/tile cave-corner)))
+
+    (is (= nil (s/explain-data ::pixel/tile wet-floor)))
+
+    (is (= nil (s/explain-data ::pixel/tile stairs)))
+
+    (is (= nil (s/explain-data ::pixel/tile tile-floor)))
+
+    (is (= nil (s/explain-data ::pixel/tile wall-braziers)))
+
+    (is (= nil (s/explain-data ::pixel/tile standing-brazier)))
+
+    (is (= nil (s/explain-data ::pixel/tile stair-down)))
+
+    (is (= nil (s/explain-data ::pixel/tile stair-up)))
+
+    (is (= nil (s/explain-data ::pixel/tile brick-corner)))
+
+    (is (= nil (s/explain-data ::pixel/tile stone-tile)))
+
+    (is (= nil (s/explain-data ::pixel/tile statue)))
+
+    (is (= nil (s/explain-data ::pixel/tile bubble-tile)))
+
+    (is (= nil (s/explain-data ::pixel/tile stone-wall)))
+
+    (is (= nil (s/explain-data ::pixel/tile brick-wall)))
+
+    ))
