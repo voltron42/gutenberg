@@ -1,12 +1,14 @@
 (ns gutenberg.pixel-test
   (:require [clojure.test :refer :all]
             [gutenberg.pixel :as pixel]
+            [gutenberg.spec.pixel :as tiles]
             [gutenberg.img :as img]
             [clojure.string :as str]
             [clojure.xml :as xml]
             [clojure.pprint :as pp]
             [clojure.java.io :as io]
-            [clojure.edn :as edn])
+            [clojure.edn :as edn]
+            [clojure.spec.alpha :as s])
   (:import (java.io FileOutputStream)))
 
 (defn- build-files [xml-file img-file tile-doc]
@@ -51,8 +53,18 @@
     (pp/pprint (str/split (pixel/explode-tile "a|b||a||b||a||b||a||b||a") #"[|]"))))
 
 (deftest test-pixel-stairs
-  (let [[tiles palettes size {:keys [endless-stairs]}] doc]
-    (build-files "stairs.xml" "stairs.png"
-                 (into [tiles palettes size] endless-stairs))))
+  (let [[tiles palettes size {:keys [endless-stairs]}] doc
+        single (into [tiles palettes size] endless-stairs)]
+    (println (pr-str (s/explain-data ::tiles/tile-doc single)))
+    (build-files "stairs.xml" "stairs.png" single)))
+
+
+
+
+
+
+
+
+
 
 

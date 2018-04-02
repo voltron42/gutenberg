@@ -18,7 +18,7 @@
 
 (def tile-pattern-1 #"([a-z]([0-9])?)*[a-z]([|](([a-z]([0-9])?)*[a-z])?){0,15}")
 
-(s/def ::tile (s/and string? (partial re-matches tile-pattern)))
+(s/def ::tile (s/and string? (partial re-matches tile-pattern-1)))
 
 (s/def ::tile-name keyword?)
 
