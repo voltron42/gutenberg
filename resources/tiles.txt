@@ -1,6 +1,6 @@
   :road "ab5aab5a|b|b3cb6cb|b|bcb6cb|b4ab6ab|b|ab5aab5a|||b|b3cb6cb|b|bcb6cb|b4ab6abb|b|ab5aab5a"
 
-
+:half-door "bc5bia|ccb3ccia|cbbaabbcia|cba3bcig|cba3bcigh|cbbaabbcigh|ccb3ccigh|bc5bigh|id5iigh|ie5iighhiihh|i8ghiaaih|fieddeifigiaggai|fieddeifigag3a|fiieeiifig2iigg|i8ggi3g|i"
 
 
 

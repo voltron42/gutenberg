@@ -111,20 +111,20 @@
     (= nil
        (s/explain-data
          ::pixel/palette
-         ["lightgrey" "grey" "darkgrey"])))
+         [:lightgrey :grey :darkgrey])))
 
   (is
     (= nil
        (s/explain-data
          ::pixel/palette
-         ["white" "pink" "purple" "black"])))
+         [:white :pink :purple :black])))
 
   (is
     (= nil
        (s/explain-data
          ::pixel/palette-set
-         {:floor ["lightgrey" "grey" "darkgrey"]
-          :wall ["white" "pink" "purple" "black"]}
+         {:floor [:lightgrey :grey :darkgrey]
+          :wall [:white :pink :purple :black]}
          )))
 
   )
@@ -141,25 +141,25 @@
     (= nil
        (s/explain-data
          ::pixel/tile-listing
-         [:corner :wall :a-b/a]))))
+         [:corner :wall :ab/a]))))
 
 (deftest test-doc
   (let [tile-doc
         [{:corner corner-tile
           :wall wall-tile
           :floor floor-tile}
-         {:floor ["lightgrey" "grey" "darkgrey"]
-          :wall ["white" "pink" "purple" "black"]}
+         {:floor [:lightgrey :grey :darkgrey]
+          :wall [:white :pink :purple :black]}
          10
          [:corner :wall :a/a]
          [:corner :wall :flip-down :a/h]
          [:corner :wall :flip-over :j/a]
          [:corner :wall :flip-down :flip-over :j/h]
-         [:wall :wall :b-i/a]
-         [:wall :wall :flip-down :b-i/h]
-         [:wall :wall :turn-left :a/b-g]
-         [:wall :wall :turn-left :flip-over :j/b-g]
-         [:floor :floor :b-i/b-g]]]
+         [:wall :wall :bi/a]
+         [:wall :wall :flip-down :bi/h]
+         [:wall :wall :turn-left :a/bg]
+         [:wall :wall :turn-left :flip-over :j/bg]
+         [:floor :floor :bi/bg]]]
     (is
       (= nil
          (s/explain-data

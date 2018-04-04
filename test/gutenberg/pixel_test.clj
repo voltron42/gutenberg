@@ -21,7 +21,7 @@
     (spit (str "resources/" xml-file) xml)
     (img/rasterize :png {} svg out)))
 
-(def ^:private doc (edn/read-string (slurp "resources/pixel-tiles.edn")))
+(def ^:private doc (edn/read-string (slurp "resources/practicetiles/pixel-tiles.edn")))
 
 (deftest test-pixel-small
   (let [[tiles palettes size {:keys [single]}] doc]

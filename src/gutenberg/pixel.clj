@@ -2,14 +2,26 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.string :as str]
             [gutenberg.spec.pixel :as pixel]
-            [clojure.pprint :as pp])
-  (:import (clojure.lang ExceptionInfo)))
+            [gutenberg.img :as img]
+            [clojure.pprint :as pp]
+            [clojure.edn :as edn]
+            [clojure.java.io :as io]
+            [clojure.xml :as xml]
+            [gutenberg.util.color :as colors])
+  (:import (clojure.lang ExceptionInfo)
+           (java.io FileOutputStream)))
 
 (defmulti ^:private process-color first)
 
 (defmethod ^:private process-color :default [[_ str-val]] str-val)
 
 (defmethod ^:private process-color :rgb [[_ {:keys [r g b]}]] (str "rgb(" r "," g "," b ")"))
+
+(defmethod ^:private process-color :named [[_ name-key]] (name name-key))
+
+(defmethod ^:private process-color :pantone [[_ pantone]] (name (get colors/pantone (keyword "pantone" (name pantone)))))
+
+(defmethod ^:private process-color :none [_] nil)
 
 (defmulti ^:private do-action
           (fn [_ action]
@@ -150,11 +162,8 @@
   (let [tile (explode-tile (str/join "|" (str/split tile #"\n")))]
     (str/join "\n" (apply mapv #(apply str %&) (str/split tile #"[|]")))))
 
-(defn build-svg-from-tile-doc [tile-doc]
-  (when-let [error (s/explain-data ::pixel/tile-doc tile-doc)]
-    (throw (ExceptionInfo. "Error in tile-doc" {:error error})))
-  (let [{:keys [tiles palettes pixel-size list] :or {pixel-size 1}} (s/conform ::pixel/tile-doc tile-doc)
-        tiles (reduce-kv #(assoc %1 %2 (parse-tile (explode-tile %3))) {} tiles)
+(defn- build-svg-from-exploded-tile-doc [{:keys [tiles palettes pixel-size list] :or {pixel-size 1}}]
+  (let [tiles (reduce-kv #(assoc %1 %2 (parse-tile (explode-tile %3))) {} tiles)
         palettes (reduce-kv #(assoc %1 %2 (mapv process-color %3)) {} palettes)
         list (into (sorted-map) (mapv vector (range) list))
         {:keys [defs uses]} (reduce-kv
@@ -170,19 +179,47 @@
                                                      :bg bg
                                                      :pixels (reduce-kv
                                                                #(let [color (get palette %2)]
-                                                                  (concat %1 (mapv (fn [pixel] (assoc pixel :c color)) %3)))
+                                                                  (if-not (nil? color)
+                                                                    (concat %1 (mapv (fn [pixel] (assoc pixel :c color)) %3))
+                                                                    %1))
                                                                [] pixels)})
-
                                    :uses (concat uses (reduce (fn [out loc]
-                                                                (concat out (mapv (fn [[x y]] {:id id :x x :y y}) (span-loc loc))))
+                                                                (concat out (mapv (fn [[x y]] {:id id :x x :y y})
+                                                                                  (span-loc loc))))
                                                               [] locs))}))
                               {:defs [] :uses []}
                               list)
         [width height] (mapv #(inc (apply max (mapv % uses))) [:x :y])]
     (explode-svg pixel-size defs uses width height)))
 
+(defn build-svg-from-tile-doc [tile-doc]
+  (when-let [error (s/explain-data ::pixel/tile-doc tile-doc)]
+    (throw (ExceptionInfo. "Error in tile-doc" {:error error})))
+  (build-svg-from-exploded-tile-doc (s/conform ::pixel/tile-doc tile-doc)))
+
 (defn build-svgs-from-tile-docs [tile-docs]
   (when-let [error (s/explain-data ::pixel/tile-doc-set tile-docs)]
     (throw (ExceptionInfo. "Error in tile-doc" {:error error})))
-  (let [{:keys [tiles palettes pixel-size docs] :or {pixel-size 1}} (s/conform ::pixel/tile-doc-set tile-docs)]
-    (reduce-kv #(assoc %1 %2 (build-svg-from-tile-doc (into [tiles palettes pixel-size] %3))) {} docs)))
+  (let [tile-doc-set (s/conform ::pixel/tile-doc-set tile-docs)
+        {:keys [tiles palettes pixel-size docs] :or {pixel-size 1} :as tiles-n-palettes} tile-doc-set
+        tile-map (reduce-kv #(assoc %1 %2 {:tiles tiles :palettes palettes :pixel-size pixel-size :list %3}) {} docs)]
+    (reduce-kv #(do (println %2) (assoc %1 %2 (build-svg-from-exploded-tile-doc %3))) {} tile-map)))
+
+(defn build-svgs-and-pngs-from-tile-docs-file [filename]
+  (let [path (.getParent (io/file filename))
+        docs (edn/read-string (slurp filename))
+        _ (println "building svgs")
+        svgs (build-svgs-from-tile-docs docs)]
+    (println)
+    (println "building images:")
+    (doseq [[label svg] svgs]
+      (println label)
+      (let [out-name (name label)
+            xml (with-out-str (xml/emit svg))
+            out (FileOutputStream. (io/file path (str out-name ".png")))]
+        (spit (.getAbsolutePath (io/file path (str out-name ".xml"))) xml)
+        (img/rasterize :png {} svg out)
+        ))))
+
+(defn -main [& [filename]]
+  (build-svgs-and-pngs-from-tile-docs-file filename))
