@@ -25,6 +25,7 @@
   :wall-braziers "bc5bbc5b|ccb3c3b3c|cbbaabbccbbaabbc|cba3bccba3bc||cbbaabbccbbaabbc|ccb3c3b3c|bc5bbc5b|gd5ggd5g|ge5gge5g|fgeddegffgeddegf||fggeeggffggeeggf|g"
   :wet-floor "b|baab5aabb|b|||b3aab5aabb|b|||baab5aabb|b|||b3aab5aabb|b"
   :half-door "bc5bia|ccb3ccia|cbbaabbcia|cba3bcig|cba3bcigh|cbbaabbcigh|ccb3ccigh|bc5bigh|id5iigh|ie5iighhiihh|i8ghiaaih|fieddeifigiaggai|fieddeifigag3a|fiieeiifig2iigg|i8ggi3g|i"
+  :stair-door "a|b|bbcd9cb|bcd6bb2dcb|bd7bab2db|bd7cbabbdb|bd4bbdccbabdb|bd3b3dccbadb|bd2bab3dccbdb|bd2cbaab2dccdb|bd2c2baabbdcdb|bd4c2baabddb|bdbabd3ccbabdb|bda4bd3ccdb|bda7bd3b|d"
   :border "b||a"
   }
  {
@@ -110,5 +111,6 @@
               [:wall-braziers :brazier :a/e]
               [:wet-floor :shallow :b/e]
               [:half-door :half-door :c/e]
+              [:stair-door :door :d/e]
               ]
   }]

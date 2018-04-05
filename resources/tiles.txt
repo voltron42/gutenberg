@@ -2,7 +2,19 @@
 
 :half-door "bc5bia|ccb3ccia|cbbaabbcia|cba3bcig|cba3bcigh|cbbaabbcigh|ccb3ccigh|bc5bigh|id5iigh|ie5iighhiihh|i8ghiaaih|fieddeifigiaggai|fieddeifigag3a|fiieeiifig2iigg|i8ggi3g|i"
 
+:instruments [:none :white :pale :dark :black]
 
+:horn "a"
+
+:harp "a"
+
+:drum "a"
+
+:pipes "a"
+
+:flute "a"
+
+:mandolin "a"
 
 
 

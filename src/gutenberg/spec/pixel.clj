@@ -14,8 +14,6 @@
               high (if (nil? high) low high)]
           (>= 0 (.compareTo (str low) (str high))))))))
 
-(def tile-pattern #"[a-z]{16}([|][a-z]{16})+")
-
 (def tile-pattern-1 #"([a-z]([0-9])?)*[a-z]([|](([a-z]([0-9])?)*[a-z])?){0,15}")
 
 (s/def ::tile (s/and string? (partial re-matches tile-pattern-1)))

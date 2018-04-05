@@ -209,17 +209,27 @@
   (let [path (.getParent (io/file filename))
         docs (edn/read-string (slurp filename))
         _ (println "building svgs")
-        svgs (build-svgs-from-tile-docs docs)]
-    (println)
-    (println "building images:")
-    (doseq [[label svg] svgs]
-      (println label)
-      (let [out-name (name label)
-            xml (with-out-str (xml/emit svg))
-            out (FileOutputStream. (io/file path (str out-name ".png")))]
-        (spit (.getAbsolutePath (io/file path (str out-name ".xml"))) xml)
-        (img/rasterize :png {} svg out)
-        ))))
+        svgs (build-svgs-from-tile-docs docs)
+        _ (println)
+        _ (println "building images:")
+        gallery (mapv (fn [[label svg]]
+                        (println label)
+                        (let [out-name (name label)
+                              xml (with-out-str (xml/emit svg))
+                              img-name (str out-name ".png")
+                              svg-name (str out-name ".xml")
+                              out (FileOutputStream. (io/file path img-name))]
+                          (spit (.getAbsolutePath (io/file path svg-name)) xml)
+                          (img/rasterize :png {} svg out)
+                          {:tag :a
+                           :attrs {:href svg-name}
+                           :content [{:tag :img
+                                      :attrs {:src img-name}}]})) svgs)
+        gallery-page {:tag :html
+                      :content [{:tag :body
+                                 :content gallery}]}
+        gallery-html (with-out-str (xml/emit-element gallery-page))]
+    (spit (.getAbsolutePath (io/file path "gallery.html")) gallery-html)))
 
 (defn -main [& [filename]]
   (build-svgs-and-pngs-from-tile-docs-file filename))
