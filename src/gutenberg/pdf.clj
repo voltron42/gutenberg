@@ -1,6 +1,5 @@
 (ns gutenberg.pdf
   (:require [clojure.spec.alpha :as s]
-            [ring.util.io :as io]
             [clj-pdf.core :as pdf]
             [gutenberg.spec.pdf :as spec])
   (:import (clojure.lang ExceptionInfo)

@@ -1,1 +1,0 @@
-(ns gutenberg.spec.common)
